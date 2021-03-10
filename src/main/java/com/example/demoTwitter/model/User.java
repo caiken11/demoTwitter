@@ -2,8 +2,12 @@ package com.example.demoTwitter.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,8 +25,16 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Email(message = "Please provide a valid email")
+    @NotEmpty(message = "Please provide an email")
     private String email;
+
+    @Length(min = 3, message = "Your username must have more than 3 characters")
+    @Length (max = 15, message = "Your username cannot be more than 15 characters")
+    @Pattern(regexp="[^\\s]+", message="Your username cannot contain spaces")
     private String username;
+
+    @Length(min = 5, message = "Your password must be at least 5 characters")
     private String password;
     private String firstName;
     private String lastName;
@@ -104,5 +116,21 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
     }
 }
